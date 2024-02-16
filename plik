@@ -1,1 +1,20 @@
+from bs4 import BeautifulSoup
+import urllib.request
 
+url = 'https://helion.pl'
+try:
+    with urllib.request.urlopen(url) as response:
+        html_content = response.read().decode('utf-8')
+
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        products = soup.find_all('div', class_='list-group-item')
+
+        for product in products:
+            name = product.find('h2', class_='product-name').text.strip()
+            price = product.find('span', class_='price').text.strip()
+            print("Nazwa:", name)
+            print("Cena:", price)
+            print()  i
+except urllib.error.URLError as e:
+    print("Błąd podczas pobierania strony:", e)
